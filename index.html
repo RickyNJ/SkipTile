@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MQTT Topic Value Display</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/2.18.8/mqtt.min.js"></script>
+</head>
+<body>
+  <h1>Topic Value</h1>
+  <div> <span id="topicValue"></span></div>
+
+  <script>
+    // MQTT Broker Details
+    const brokerUrl = 'mqtt://localhost:9001'; // Replace with your MQTT broker URL
+    const topic = 'matten/1'; // Replace with your MQTT topic
+
+    // Create a client instance
+    const client = mqtt.connect(brokerUrl);
+
+    // Set up the callback function to handle incoming messages
+    client.on('message', function (topic, message) {
+      // Update the topic value in the HTML
+      document.getElementById('topicValue').textContent = message.toString();
+    });
+
+    // Connect to the MQTT broker and subscribe to the topic
+    client.on('connect', function () {
+      client.subscribe(topic);
+    });
+  </script>
+</body>
+</html>

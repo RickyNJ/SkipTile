@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PixiJS Grid Example with MQTT</title>
+    <script src="https://pixijs.download/v5.3.7/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/2.18.8/mqtt.min.js"></script>
+    <style>
+        body { margin: 0; }
+    </style>
+</head>
+<body>
+    <script>
+        const squareSize = 10; 
+        const gridSize = 40; 
+        const colours = ["#150c26","#160c26","#160d27","#170d28","#170d28","#170d29","#180d2a","#180e2a","#190e2b","#190e2c","#1a0e2c","#1a0f2d","#1a0f2e","#1b0f2e","#1b0f2f","#1c0f30","#1c1030","#1d1031","#1d1032","#1d1032","#1e1033","#1e1134","#1f1134","#1f1135","#201136","#201136","#201237","#211238","#211238","#221239","#22133a","#23133a","#23133b","#23133c","#24133c","#24143d","#25143e","#25143e","#26143f","#261440","#271540","#271541","#281542","#281542","#281543","#291644","#291644","#2a1645","#2a1646","#2b1646","#2b1747","#2c1748","#2c1748","#2d1749","#2d184a","#2e184a","#2e184b","#2f184c","#2f184c","#2f194d","#30194e","#30194e","#31194f","#311950","#321a50","#321a51","#331a52","#331a52","#341a53","#341b54","#351b54","#351b55","#361b56","#361b56","#371c57","#371c58","#381c58","#381c59","#391c5a","#391d5a","#3a1d5b","#3a1d5c","#3b1d5c","#3b1d5d","#3c1e5e","#3c1e5e","#3d1e5f","#3d1e60","#3e1e60","#3e1f61","#3f1f62","#3f1f63","#401f63","#401f64","#412065","#412065","#422066","#422067","#432067","#432168","#442169","#442169","#45216a","#46226b","#46226b","#47226c","#47226d","#48226d","#48236e","#49236f","#49236f","#4a2370","#4a2371","#4b2471","#4b2472","#4c2473","#4d2473","#4d2474","#4e2575","#4e2575","#4f2576","#4f2577","#502577","#502678","#512679","#512679","#52267a","#53267b","#53277b","#54277c","#54277d","#55277e","#55277e","#56287f","#572880","#572880","#582881","#582882","#592982","#592983","#5a2984","#5b2984","#5b2985","#5c2a86","#5c2a86","#5d2a87","#5d2a88","#5e2a88","#5f2a89","#5f2b8a","#602b8a","#602b8b","#612b8c","#612b8c","#622c8d","#632c8e","#632c8e","#642c8f","#642c90","#652d91","#662d91","#662d92","#672d93","#672d93","#682e94","#692e95","#692e95","#6a2e96","#6a2e97","#6b2f97","#6c2f98","#6c2f99","#6d2f99","#6e2f9a","#6e309b","#6f309b","#6f309c","#70309d","#71309d","#71319e","#72319f","#72319f","#7331a0","#7431a1","#7432a2","#7532a2","#7632a3","#7632a4","#7732a4","#7833a5","#7833a6","#7933a6","#7933a7","#7a33a8","#7b33a8","#7b34a9","#7c34aa","#7d34aa","#7d34ab","#7e34ac","#7f35ac","#7f35ad","#8035ae","#8135ae","#8135af","#8236b0","#8336b1","#8336b1","#8436b2","#8436b3","#8537b3","#8637b4","#8637b5","#8737b5","#8837b6","#8838b7","#8938b7","#8a38b8","#8a38b9","#8b38b9","#8c38ba","#8d39bb","#8d39bc","#8e39bc","#8f39bd","#8f39be","#903abe","#913abf","#913ac0","#923ac0","#933ac1","#933bc2","#943bc2","#953bc3","#953bc4","#963cc4","#973cc4","#973dc4","#983ec5","#983ec5","#993fc5","#9940c5","#9a40c6","#9a41c6","#9b42c6","#9b42c6","#9c43c6","#9c44c7","#9d44c7","#9d45c7","#9e46c7","#9e46c7","#9f47c8","#a048c8","#a048c8","#a149c8","#a14ac9","#a24ac9","#a24bc9","#a34cc9","#a34cc9","#a44dca","#a44eca","#a54eca","#a54fca","#a650cb","#a650cb","#a751cb","#a751cb","#a852cb","#a853cc","#a953cc","#a954cc","#a5c","#a5c","#ab56cd","#ab57cd","#ac57cd","#ac58cd","#ad59cd","#ad59ce","#ae5ace","#ae5bce","#af5bce","#af5ccf","#b05dcf","#b05dcf","#b15ecf","#b15fcf","#b15fd0","#b260d0","#b261d0","#b361d0","#b362d0","#b463d1","#b463d1","#b564d1","#b565d1","#b665d2","#b666d2","#b767d2","#b767d2","#b868d2","#b869d3","#b869d3","#b96ad3","#b96bd3","#ba6bd3","#ba6cd4","#bb6dd4","#bb6dd4","#bc6ed4","#bc6fd4","#bd6fd5","#bd70d5","#bd71d5","#be71d5","#be72d6","#bf73d6","#bf73d6","#c074d6","#c075d6","#c175d7","#c176d7","#c177d7","#c277d7","#c278d7","#c379d8","#c379d8","#c47ad8","#c47bd8","#c47bd8","#c57cd9","#c57dd9","#c67dd9","#c67ed9","#c77fd9","#c77fda","#c780da","#c881da","#c881da","#c982db","#c983db","#c983db","#ca84db","#ca85db","#cb85dc","#cb86dc","#cb87dc","#cc87dc","#cc88dc","#cd89dd","#cd89dd","#cd8add","#ce8bdd","#ce8bdd","#cf8cde","#cf8dde","#cf8dde","#d08ede","#d08fde","#d18fdf","#d190df","#d191df","#d291df","#d292df","#d393e0","#d394e0","#d394e0","#d495e0","#d496e0","#d496e1","#d597e1","#d598e1","#d698e1","#d699e1","#d69ae2","#d79ae2","#d79be2","#d79ce2","#d89ce3","#d89de3","#d99ee3","#d99ee3","#d99fe3","#daa0e4","#daa0e4","#daa1e4","#dba2e4","#dba2e4","#dba3e5","#dca4e5","#dca4e5","#dca5e5","#dda6e5","#dda6e6","#dda7e6","#dea8e6","#dea8e6","#dfa9e6","#dfaae7","#dfaae7","#e0abe7","#e0ace7","#e0ace7","#e1ade8","#e1aee8","#e1aee8","#e2afe8","#e2b0e8","#e2b0e9","#e2b1e9","#e3b2e9","#e3b3e9","#e3b3e9","#e4b4ea","#e4b5ea","#e4b5ea","#e5b6ea","#e5b7ea","#e5b7eb","#e6b8eb","#e6b9eb","#e6b9eb","#e7baeb","#e7bbec","#e7bbec","#e8bcec","#e8bdec","#e8bdec","#e8beed","#e9bfed","#e9bfed","#e9c0ed","#eac1ed","#eac1ee","#eac2ee","#ebc3ee","#ebc3ee","#ebc4ee","#ebc5ef","#ecc5ef","#ecc6ef","#ecc7ef","#edc8ef","#edc8f0","#edc9f0","#edcaf0","#eecaf0","#eecbf0","#eeccf0","#eeccf1","#efcdf1","#efcef1","#efcef1","#f0cff1","#f0d0f2","#f0d0f2","#f0d1f2","#f1d2f2","#f1d2f2","#f1d3f3","#f1d4f3","#f2d4f3","#f2d5f3","#f2d6f3","#f2d6f4","#f3d7f4","#f3d8f4","#f3d9f4","#f3d9f4","#f4daf5","#f4dbf5","#f4dbf5","#f4dcf5","#f5ddf5","#f5ddf6","#f5def6","#f5dff6","#f6dff6","#f6e0f6","#f6e1f7","#f6e1f7","#f6e2f7","#f7e3f7","#f7e3f7","#f7e4f7","#f7e5f8","#f8e5f8","#f8e6f8","#f8e7f8","#f8e8f8","#f9e8f9","#f9e9f9","#f9eaf9","#f9eaf9","#f9ebf9","#faecfa","#faecfa", "#faecfa", "#faecfa"];
+        
+        const app = new PIXI.Application({ width: squareSize*40, height: squareSize*40, backgroundColor: 0x000000 });
+        document.body.appendChild(app.view);
+
+        const mqttClient = mqtt.connect('mqtt://localhost:9001'); 
+
+        mqttClient.on('connect', function () {
+            console.log('Connected to MQTT broker');
+            mqttClient.subscribe('matten/1');
+        });
+
+        mqttClient.on('message', function (topic, message) {
+            if (topic === 'matten/1') {
+                var numbersString = message.toString();
+                var numbersArray = numbersString.split(",");
+                numbersArray.pop()
+                
+                if (numbersArray.length === gridSize * gridSize) {
+                    drawGrid(numbersArray);
+                } else {
+                    console.error('Invalid number of color codes');
+                }
+            }
+        });
+
+        function drawGrid(numbersArray) {
+            app.stage.removeChildren(); 
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    var index = i * gridSize + j;
+                    const square = new PIXI.Graphics();
+                    const color = colours[Number(numbersArray[index])]; 
+                    square.beginFill(PIXI.utils.string2hex(color));
+                    square.drawRect(j * squareSize, i * squareSize, squareSize, squareSize);
+                    square.endFill();
+                    app.stage.addChild(square);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
